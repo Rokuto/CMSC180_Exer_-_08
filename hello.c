@@ -42,11 +42,12 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     int *globaldata = NULL;
-    int *localdata;
-    int *localsum;
-    int *globalsum;
+    int *localdata = NULL;
+    int *localsum = NULL;
+    int *globalsum = NULL;
 
     localsum = malloc(sizeof(int) * n/size);
+    localdata = malloc(sizeof(int) * n*n/size);
 
     if (rank == 0) {
         globaldata = createMatrix(n, n);
