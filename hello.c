@@ -54,8 +54,9 @@ int main(int argc, char **argv) {
         globalsum = malloc(sizeof(int) * n);
 
         //printf("Processor %d has data: ", rank);
-        for (int i = 0; i < n * n; i++)
+        for (i = 0; i < n * n; i++){
             printf("%d ", globaldata[i]);
+        }
         printf("\n");
     }
 
