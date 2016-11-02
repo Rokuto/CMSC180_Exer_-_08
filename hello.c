@@ -34,7 +34,7 @@ int *createMatrix (int nrows, int ncols) {
 
 int main(int argc, char **argv) {
     int size, rank;
-    int n = 4, root = 0;
+    int n = 10000, root = 0;
     int i = 0;
 
     MPI_Init(&argc, &argv);
