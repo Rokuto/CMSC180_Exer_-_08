@@ -12,14 +12,14 @@ int *createMatrix (int nrows, int ncols) {
         exit(1);
     }
 
-    /*for(i = 0; i < nrows; i++){
+    for(i = 0; i < nrows; i++){
         for(j = 0; j < ncols; j++){
             row[i][j] = 1;
             printf("%d ", row[i][j]);
             h++;
         }
         printf("\n");
-    }*/
+    }
 
     h = 0;
     for(i = 0; i < nrows; i++){
