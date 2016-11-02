@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 
     if (rank == 0) {
         printf("Processor %d has sums: ", rank);
-        for (int i = 0; i < n; i++){
+        for (i = 0; i < n; i++){
             printf("%d ", globalsum[i]);
         }
         printf("\n");
