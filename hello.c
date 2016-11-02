@@ -12,14 +12,14 @@ int *createMatrix (int nrows, int ncols) {
         exit(1);
     }
 
-    for(i = 0; i < nrows; i++){
+    /*for(i = 0; i < nrows; i++){
         for(j = 0; j < ncols; j++){
             row[i][j] = 1;
             printf("%d ", row[i][j]);
             h++;
         }
         printf("\n");
-    }
+    }*/
 
     h = 0;
     for(i = 0; i < nrows; i++){
@@ -34,7 +34,7 @@ int *createMatrix (int nrows, int ncols) {
 
 int main(int argc, char **argv) {
     int size, rank;
-    int n = 10, root = 0;
+    int n = 4, root = 0;
     int i = 0;
 
     MPI_Init(&argc, &argv);
@@ -53,13 +53,13 @@ int main(int argc, char **argv) {
         globalsum = malloc(sizeof(int) * n);
 
         //printf("Processor %d has data: ", rank);
-        //for (int i = 0; i < n * n; i++)
-            //printf("%d ", globaldata[i]);
-        //printf("\n");
+        for (int i = 0; i < n * n; i++)
+            printf("%d ", globaldata[i]);
+        printf("\n");
     }
 
     /* Scatter */
-    MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
+    //MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
 
     /* Column sums */
     // for (i = n/size; i < n*n/size; ++i){
