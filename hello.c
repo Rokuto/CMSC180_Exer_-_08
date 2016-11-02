@@ -1,34 +1,97 @@
-#include <stdio.h>
 #include <mpi.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int main(int argc, char** argv) {
-    int i, myrank, nprocs, number, num_elements_to_send = 1, recv; 
-    int num_elements_recv = 1, root = 0;
-    int num[4], data[4];
+
+int *createMatrix (int nrows, int ncols) {
+    int *matrix, row[nrows][ncols];
+    int h = 0, i, j;
+
+    if (( matrix = malloc(nrows*ncols*sizeof(int))) == NULL) {
+        printf("Malloc error");
+        exit(1);
+    }
+
+    for(i = 0; i < nrows; i++){
+        for(j = 0; j < ncols; j++){
+            row[i][j] = 1;
+            printf("%d ", row[i][j]);
+            h++;
+        }
+        printf("\n");
+    }
+
+    h = 0;
+    for(i = 0; i < nrows; i++){
+        for(j = 0; j < ncols; j++){
+            matrix[h] = row[j][i];
+            h++;
+        }
+    }
+
+    return matrix;
+}
+
+int main(int argc, char **argv) {
+    int size, rank;
+    int n = 10, root = 0;
+    int i;
 
     MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
-    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    printf("Hello from processor %d of %d\n", myrank, nprocs);
+    int *globaldata = NULL;
+    int *localdata;
+    int *localsum;
+    int *globalsum;
 
-    if (myrank == 0) {
-        number = -1;
-        for(i = 0; i < 4; i++){
-            data[i] = i;
-        }
+    localsum = malloc(sizeof(int) * n/size);
 
-        //MPI_Send(&num, 4, MPI_INT, 1, 0, MPI_COMM_WORLD);
+    if (rank == 0) {
+        globaldata = createMatrix(n, n);
+        globalsum = malloc(sizeof(int) * n);
+
+        //printf("Processor %d has data: ", rank);
+        //for (int i = 0; i < n * n; i++)
+            //printf("%d ", globaldata[i]);
+        //printf("\n");
     }
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Scatter(data, num_elements_to_send. MPI_INT, &recv, num_elements_recv, MPI_COMM_WORLD);
+    /* Scatter */
+    MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
 
-    if(myrank != 0){
-        printf("I %d receive %d\n", myrank, recv);
+    /* Column sums */
+    for (i = n/size; i < n*n/size; ++i){
+        //printf("Processor %d has data %d\n", rank, localdata[i]);
+        localdata[i] = localdata[i] + localdata[i-(n/size)];
+    }
+    /* Print answer */
+    // for (int i = 0; i < n*n/size; ++i){
+    //     printf("Processor %d doubling the data, now has %d\n", rank, localdata[i]);
+    // }
+
+    /* Get the last row */
+    for (i = 0; i < n/size; ++i){
+        //printf("Processor %d data, now has %d\n", rank, localdata[(n*n/size)-i-1]);
+        localsum[i] = localdata[(n*n/size)-i-1];
     }
 
-    MPI_Barrier(MPI_COMM_WORLD);
+    
+    /* Gather */
+    MPI_Gather(localsum, n/size, MPI_INT, globalsum, n/size, MPI_INT, root, MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        printf("Processor %d has sums: ", rank);
+        for (int i = 0; i < n; i++)
+            printf("%d ", globalsum[i]);
+        printf("\n");
+    }
+
+    if (rank == 0){
+        free(globaldata);
+        free(globalsum);
+    }
 
     MPI_Finalize();
     return 0;
