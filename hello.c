@@ -35,7 +35,7 @@ int *createMatrix (int nrows, int ncols) {
 int main(int argc, char **argv) {
     int size, rank;
     int n = 10, root = 0;
-    int i;
+    int i = 0;
 
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
     }
 
     /* Scatter */
-    //MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
+    MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
 
     /* Column sums */
     // for (i = n/size; i < n*n/size; ++i){
