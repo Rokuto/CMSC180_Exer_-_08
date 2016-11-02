@@ -54,14 +54,14 @@ int main(int argc, char **argv) {
         globalsum = malloc(sizeof(int) * n);
 
         //printf("Processor %d has data: ", rank);
-        for (i = 0; i < n * n; i++){
+        /*for (i = 0; i < n * n; i++){
             printf("%d ", globaldata[i]);
         }
-        printf("\n");
+        printf("\n");*/
     }
 
     /* Scatter */
-    //MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
+    MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
 
     /* Column sums */
     // for (i = n/size; i < n*n/size; ++i){
