@@ -61,34 +61,34 @@ int main(int argc, char **argv) {
     }
 
     /* Scatter */
-    MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
+    //MPI_Scatter(globaldata, n*n/size, MPI_INT, localdata, n*n/size, MPI_INT, root, MPI_COMM_WORLD);
 
     /* Column sums */
-    for (i = n/size; i < n*n/size; ++i){
-        //printf("Processor %d has data %d\n", rank, localdata[i]);
-        localdata[i] = localdata[i] + localdata[i-(n/size)];
-    }
-    /* Print answer 
-    // for (int i = 0; i < n*n/size; ++i){
-    //     printf("Processor %d doubling the data, now has %d\n", rank, localdata[i]);
-    // }*/
+    // for (i = n/size; i < n*n/size; ++i){
+    //     //printf("Processor %d has data %d\n", rank, localdata[i]);
+    //     localdata[i] = localdata[i] + localdata[i-(n/size)];
+    // }
+    //  Print answer 
+    // // for (int i = 0; i < n*n/size; ++i){
+    // //     printf("Processor %d doubling the data, now has %d\n", rank, localdata[i]);
+    // // }
 
-    /* Get the last row */
-    for (i = 0; i < n/size; ++i){
-        //printf("Processor %d data, now has %d\n", rank, localdata[(n*n/size)-i-1]);
-        localsum[i] = localdata[(n*n/size)-i-1];
-    }
+    // /* Get the last row */
+    // for (i = 0; i < n/size; ++i){
+    //     //printf("Processor %d data, now has %d\n", rank, localdata[(n*n/size)-i-1]);
+    //     localsum[i] = localdata[(n*n/size)-i-1];
+    // }
 
     
     /* Gather */
-    MPI_Gather(localsum, n/size, MPI_INT, globalsum, n/size, MPI_INT, root, MPI_COMM_WORLD);
+    //MPI_Gather(localsum, n/size, MPI_INT, globalsum, n/size, MPI_INT, root, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        printf("Processor %d has sums: ", rank);
-        for (i = 0; i < n; i++){
-            printf("%d ", globalsum[i]);
-        }
-        printf("\n");
+        // printf("Processor %d has sums: ", rank);
+        // for (i = 0; i < n; i++){
+        //     printf("%d ", globalsum[i]);
+        // }
+        // printf("\n");
     }
 
     if (rank == 0){
