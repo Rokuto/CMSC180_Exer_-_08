@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-int *createMatrix (int nrows, int ncols) {
+/*int *createMatrix (int nrows, int ncols) {
     int *matrix, row[nrows][ncols];
     int h = 0, i, j;
 
@@ -30,7 +30,7 @@ int *createMatrix (int nrows, int ncols) {
     }
 
     return matrix;
-}
+}*/
 
 int main(int argc, char **argv) {
     int size, rank;
@@ -44,14 +44,19 @@ int main(int argc, char **argv) {
     int *globaldata = NULL;
     int *localdata = NULL;
     //int *localsum = NULL;
-    int *globalsum = NULL;
+    //int *globalsum = NULL;
 
     //localsum = malloc(sizeof(int) * n/size);
     localdata = malloc(sizeof(int) * n*n/size);
 
     if (rank == 0) {
-        globaldata = createMatrix(n, n);
-        globalsum = malloc(sizeof(int) * n);
+        //globaldata = createMatrix(n, n);
+        if (( globaldata = malloc(n*n*sizeof(int))) == NULL) {
+            printf("Malloc error");
+            exit(1);
+        }
+        
+        //globalsum = malloc(sizeof(int) * n);
 
         //printf("Processor %d has data: ", rank);
         /*for (i = 0; i < n * n; i++){
@@ -82,19 +87,19 @@ int main(int argc, char **argv) {
 
     
     /* Gather */
-    MPI_Gather(localdata, n/size, MPI_INT, globalsum, n/size, MPI_INT, root, MPI_COMM_WORLD);
+    MPI_Gather(localdata, n/size, MPI_INT, globaldata, n/size, MPI_INT, root, MPI_COMM_WORLD);
 
     if (rank == 0) {
         printf("Processor %d has sums: ", rank);
         for (i = 0; i < n; i++){
-            printf("%d ", globalsum[i]);
+            printf("%d ", globaldata[i]);
         }
         printf("\n");
     }
 
     if (rank == 0){
         free(globaldata);
-        free(globalsum);
+        //free(globalsum);
     }
     free(localdata);
 
