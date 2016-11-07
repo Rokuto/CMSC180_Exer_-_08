@@ -15,10 +15,10 @@ int *createMatrix (int nrows, int ncols) {
     for(i = 0; i < nrows; i++){
         for(j = 0; j < ncols; j++){
             row[i][j] = 1;
-            printf("%d ", row[i][j]);
+            //printf("%d ", row[i][j]);
             h++;
         }
-        printf("\n");
+        //printf("\n");
     }
 
     h = 0;
@@ -34,7 +34,7 @@ int *createMatrix (int nrows, int ncols) {
 
 int main(int argc, char **argv) {
     int size, rank;
-    int n = 100, root = 0;
+    int n = 10, root = 0;
     int i = 0;
 
     MPI_Init(&argc, &argv);
