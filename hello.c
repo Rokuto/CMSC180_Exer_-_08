@@ -15,10 +15,10 @@ int *createMatrix (int nrows, int ncols) {
     for(i = 0; i < nrows; i++){
         for(j = 0; j < ncols; j++){
             row[i][j] = 1;
-            printf("%d ", row[i][j]);
+            //printf("%d ", row[i][j]);
             h++;
         }
-        printf("\n");
+        //printf("\n");
     }
 
     h = 0;
@@ -96,6 +96,8 @@ int main(int argc, char **argv) {
         free(globalsum);
     }
 
+    //free(localsum);
+    //free(localdata);
     MPI_Finalize();
     return 0;
 }
