@@ -31,4 +31,4 @@ EXEC=$1
 NODES=4
 
 #execute
-mpiexec -np $NODES -f ../nodes.txt ./$EXEC
+mpiexec -np $NODES -f ../../nodes.txt ./$EXEC
