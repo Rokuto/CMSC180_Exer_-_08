@@ -43,10 +43,10 @@ int main(int argc, char **argv) {
 
     int *globaldata = NULL;
     int *localdata = NULL;
-    int *localsum = NULL;
+    //int *localsum = NULL;
     int *globalsum = NULL;
 
-    localsum = malloc(sizeof(int) * n/size);
+    //localsum = malloc(sizeof(int) * n/size);
     localdata = malloc(sizeof(int) * n*n/size);
 
     if (rank == 0) {
@@ -76,12 +76,13 @@ int main(int argc, char **argv) {
     /* Get the last row */
     for (i = 0; i < n/size; ++i){
         //printf("Processor %d data, now has %d\n", rank, localdata[(n*n/size)-i-1]);
-        localsum[i] = localdata[(n*n/size)-i-1];
+        //localsum[i] = localdata[(n*n/size)-i-1];
+        localdata[i] = localdata[(n*n/size)-i-1];
     }
 
     
     /* Gather */
-    MPI_Gather(localsum, n/size, MPI_INT, globalsum, n/size, MPI_INT, root, MPI_COMM_WORLD);
+    MPI_Gather(localdata, n/size, MPI_INT, globalsum, n/size, MPI_INT, root, MPI_COMM_WORLD);
 
     if (rank == 0) {
         printf("Processor %d has sums: ", rank);
@@ -95,6 +96,7 @@ int main(int argc, char **argv) {
         free(globaldata);
         free(globalsum);
     }
+    free(localdata);
 
     //free(localsum);
     //free(localdata);
