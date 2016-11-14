@@ -194,7 +194,7 @@ int main(int argc, char **argv) {
 
     if (rank == 0) {
         end = clock();
-        time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+        time_spent = (double)(end - begin) / (double)CLOCKS_PER_SEC;
         printf("%f\n", time_spent);
         // printf("Processor %d has sums: ", rank);
         // for (i = 0; i < n; i++){
