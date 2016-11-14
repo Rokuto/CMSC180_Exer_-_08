@@ -4,5 +4,5 @@ rm output.txt
 
 mpicc -o hello.exe hello.c
 
-sbatch submit.sh ./hello.exe
+sbatch submit.sh ./hello.exe 1
 

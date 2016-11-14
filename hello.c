@@ -7,6 +7,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(int argc, char **argv) {
     int size, rank, nsize, sizeN;
@@ -25,6 +26,8 @@ int main(int argc, char **argv) {
     int localsize;
     int resizer;
 
+    clock_t begin, end;
+    double time_spent;
     // int m[n][n]; // use in data manipulation
 
 
@@ -137,7 +140,9 @@ int main(int argc, char **argv) {
         // printf("%i ", localdata[0]);
     }
     // printf("\n");
-
+    if(rank == 0){
+        begin = clock();
+    }
     /* Scatter */
     // MPI_Scatter(&(globaldata[0]), nsize, MPI_INT, localdata, nsize, MPI_INT, root, MPI_COMM_WORLD);
     MPI_Scatterv(&(globaldata[0]), sizes, displ, MPI_INT, localdata, localsize, MPI_INT, root, MPI_COMM_WORLD);
@@ -188,6 +193,9 @@ int main(int argc, char **argv) {
     MPI_Gatherv(localdata, sizes[rank], MPI_INT, globaldata, sizes, displ, MPI_INT, root, MPI_COMM_WORLD);
 
     if (rank == 0) {
+        end = clock();
+        time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+        printf("%d\n", time_spent);
         // printf("Processor %d has sums: ", rank);
         // for (i = 0; i < n; i++){
         //     printf("%d ", globaldata[i]);
