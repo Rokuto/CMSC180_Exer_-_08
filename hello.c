@@ -88,10 +88,10 @@ int main(int argc, char **argv) {
 
         /* (to be used in the exer) since random and less memory used */
         for(i = 0; i < sn; i++){
-            globaldata[i] = 1;
+            globaldata[i] = (rand() % 9) + 1;
             //printf("%i ", globaldata[i]);
         }
-        printf("\n");
+        // printf("\n");
         
     }
     
@@ -188,11 +188,11 @@ int main(int argc, char **argv) {
     MPI_Gatherv(localdata, sizes[rank], MPI_INT, globaldata, sizes, displ, MPI_INT, root, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        printf("Processor %d has sums: ", rank);
-        for (i = 0; i < n; i++){
-            printf("%d ", globaldata[i]);
-        }
-        printf("\n");
+        // printf("Processor %d has sums: ", rank);
+        // for (i = 0; i < n; i++){
+        //     printf("%d ", globaldata[i]);
+        // }
+        // printf("\n");
         free(globaldata);
     }
 
