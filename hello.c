@@ -23,6 +23,7 @@ int main(int argc, char **argv) {
     int root = 0;
     int sn = (n * n);
     int localsize;
+    int resizer;
 
     // int m[n][n]; // use in data manipulation
 
@@ -148,23 +149,24 @@ int main(int argc, char **argv) {
     //     //localdata[i] = localdata[i] + localdata[i-(sizeN)];
     // }
     // printf("\n");
+    resizer = (sizes[rank]/n);
 
     /* Column sums */
-    for (i = (sizes[rank]/mul); i < sizes[rank]; ++i){
-        localdata[i] = localdata[i] + localdata[(i - (sizes[rank]/mul))];
+    for (i = resizer; i < sizes[rank]; ++i){
+        localdata[i] = localdata[i] + localdata[(i - resizer)];
         // printf("%i ", localdata[i]);
     }
 
     /* Get the last row */
     // printf("After:");
-    for (i = ( sizes[rank] - (sizes[rank]/mul) ); i < sizes[rank]; ++i){
-        // printf("%i:%i ", i % (sizes[rank]/mul), localdata[i]);
-        localdata[i % (sizes[rank]/mul)] = localdata[i];
+    for (i = ( sizes[rank] - resizer ); i < sizes[rank]; ++i){
+        // printf("%i:%i ", i % resizer, localdata[i]);
+        localdata[i % resizer] = localdata[i];
     }
 
     /* Recompute sizes and displacement to be send */
     for (i = 1; i <=size; ++i){
-        sizes[i-1] = (sizes[i-1]/mul);
+        sizes[i-1] = (sizes[i-1]/n);
         // printf("size %i\n", sizes[i-1]);
         if(i < size){
             displ[i] = displ[i-1]+sizes[i-1];
